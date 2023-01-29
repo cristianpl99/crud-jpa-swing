@@ -4,6 +4,8 @@ package com.mycompany.peluqueriacanina.igu;
 import com.mycompany.peluqueriacanina.logica.Controladora;
 import com.mycompany.peluqueriacanina.logica.Mascota;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -52,6 +54,11 @@ public class verDatos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tablaMascotas);
 
         btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("EDITAR");
 
@@ -111,6 +118,25 @@ public class verDatos extends javax.swing.JFrame {
            cargarTabla();
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        //controlo que la tabla no este vacia y que se haya seleccionado un registro
+        if(tablaMascotas.getRowCount() > 0){
+            if (tablaMascotas.getSelectedRow() != -1){
+              int num_cliente = Integer.parseInt(String.valueOf(tablaMascotas.getValueAt(tablaMascotas.getSelectedRow(), 0)));
+              control.borrarMascota(num_cliente);
+              
+                mostrarMensaje("Mascota eliminada", "info", "Borrado de mascota");
+                cargarTabla();
+            }
+            else{
+                mostrarMensaje("Debe seleccionar una mascota", "error", "Error al querer borrar");
+            }
+        }
+        else{
+            mostrarMensaje("No hay nada para eliminar en la tabla", "error", "Error al querer borrar");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -150,5 +176,18 @@ public class verDatos extends javax.swing.JFrame {
             }   
         }
         tablaMascotas.setModel(modeloTabla);
+    }
+    
+    private void mostrarMensaje (String mensaje, String tipo, String titulo){
+         JOptionPane optionPane = new JOptionPane(mensaje);
+         if (tipo.equals("info")){
+            optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+         }else{
+              optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
+         }
+             
+        JDialog dialog = optionPane.createDialog(titulo);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
 }
