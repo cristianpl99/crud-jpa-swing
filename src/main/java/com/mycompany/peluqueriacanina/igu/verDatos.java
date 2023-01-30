@@ -61,6 +61,11 @@ public class verDatos extends javax.swing.JFrame {
         });
 
         btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,6 +142,22 @@ public class verDatos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        if (tablaMascotas.getRowCount() > 0) {
+            if (tablaMascotas.getSelectedRow() != -1) {
+                 int num_cliente = Integer.parseInt(String.valueOf(tablaMascotas.getValueAt(tablaMascotas.getSelectedRow(), 0)));
+                 modificarDatos pantallaModif = new modificarDatos(num_cliente);
+                 pantallaModif.setVisible(true);
+                 pantallaModif.setLocationRelativeTo(null);
+            } else {
+                mostrarMensaje("Debe seleccionar una mascota", "error", "Error al querer borrar");
+            }
+        } else {
+            mostrarMensaje("No hay nada para eliminar en la tabla", "error", "Error al querer borrar");
+        }
+            this.dispose();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -151,7 +172,7 @@ public class verDatos extends javax.swing.JFrame {
     private javax.swing.JTable tablaMascotas;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarTabla() {
+    public void cargarTabla() {
         //definir el modelo que queremos que tenga la tabla
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
